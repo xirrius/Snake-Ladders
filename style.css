@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    font-family: "Montserrat", sans-serif;
+    margin: 0;
+    padding: 0;
+    /* width: 100vw;
+    height: 100vh; */
+}
+
+.game {
+    /* height: 100%;
+    width: 100%; */
+
+}
+
+.heading {
+    text-align: center;
+}
+
+.board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column-reverse;
+}
+
+.container {
+    /* position: absolute; */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    height: 80vmin;
+    width: 80vmin;
+    background-color: blueviolet;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    position: relative;
+}
+
+
+
+.item {
+    color: white;
+    border: 1px solid rgb(209, 209, 209);
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    padding: 0.2rem;
+    font-size: 0.6rem;
+}
+
+#cube_outer {
+    height: 8vmin;
+    width: 8vmin;
+    /* margin: auto; */
+    /* top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;*/
+    perspective: 30vmin;
+    position: relative;
+}
+
+#cube_inner {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: all 0.75s linear;
+}
+
+#cube_inner div {
+    height: 100%;
+    width: 100%;
+    position: absolute
+}
+
+.front {
+    
+    transform: translateZ(4vmin);
+}
+.back {
+    transform: rotateY(180deg) translateZ(4vmin);
+    
+}
+.left {
+    transform: rotateY(-90deg) translateX(-4vmin);
+    transform-origin: left;
+    
+}
+.right {
+    transform: rotateY(90deg) translateX(4vmin);
+    transform-origin: right;
+    
+}
+.top {
+    transform: rotateX(-90deg) translateY(-4vmin);
+    transform-origin: top;
+    
+}
+.bottom {
+    transform: rotateX(90deg) translateY(4vmin);
+    transform-origin: bottom;
+    
+}
+img {
+    height: 100.3%;
+    width: 100.3%;
+}
+
+.players {
+    position: absolute;
+    top: 74vmin;
+    left: 2vmin;
+    height: 4vmin;
+    width: 4vmin;
+    border-radius: 50%;
+    opacity: 0.7;
+    transition-duration: 0.4s;
+    transition-property: margin;
+    z-index: 10;
+  
+}
+
+.players:nth-child(1){background-color: red;}
+.players:nth-child(2){background-color: blue;}
+
+img {
+    position: absolute;
+}
+
+#l1{
+    height: 20vmin;
+    width: 10vmin;
+    transform: rotate(30deg);
+    top: 26.5vmin;
+    left: 19vmin;
+    z-index: 2;
+}
+#l2{
+    height: 30vmin;
+    width: 10vmin;
+    transform: rotate(-30deg);
+    top: 41.5vmin;
+    left: 40vmin;
+    z-index: 2;
+}
+#l3{
+    height: 20vmin;
+    width: 10vmin;
+    transform: rotate(-30deg);
+    top: 2vmin;
+    left: 19.5vmin;
+    z-index: 2;
+}
+#l4{
+    height: 40vmin;
+    width: 10vmin;
+    transform: rotate(30deg);
+    top: 25.5vmin;
+    left: 63vmin;
+    /* z-index: 2; */
+}
+#l5{
+    height: 10vmin;
+    width: 10vmin;
+    transform: rotate(-30deg);
+    top: 19.5vmin;
+    left: 43vmin;
+    z-index: 2;
+}
+#l6{
+    height: 10vmin;
+    width: 10vmin;
+    transform: rotate(50deg);
+    top: 68vmin;
+    left: 58.5vmin;
+    z-index: 2;
+}
+#l7{
+    height: 15vmin;
+    width: 10vmin;
+    transform: rotate(-30deg);
+    top: 48.9vmin;
+    left: 4vmin;
+    z-index: 2;
+}
+#l8{
+    height: 10vmin;
+    width: 10vmin;
+    transform: rotate(55deg);
+    top:4vmin;
+    left: 67vmin;
+    z-index: 2;
+}
+
+#s1{
+    height: 40vmin;
+    width: 16vmin;
+    transform: rotate(30deg);
+    top: 19vmin;
+    left: 20vmin;
+    
+}
+#s2{
+    height: 20vmin;
+    width: 18vmin;
+    transform: rotate(-55deg);
+    top: 9vmin;
+    left: 60vmin;
+}
+#s3{
+    height: 40vmin;
+    width: 16vmin;
+    transform: rotate(30deg);
+    top: 37vmin;
+    left: 23vmin;
+}
+#s4{
+    height: 20vmin;
+    width: 8vmin;
+    transform: rotate(30deg);
+    top: 18vmin;
+    left: 2vmin;
+}
+#s5{
+    height: 30vmin;
+    width: 30vmin;
+    transform: rotate(-100deg);
+    top: 2vmin;
+    left: 33vmin;
+}
+#s6{
+    height: 18vmin;
+    width: 10vmin;
+    transform: rotate(0deg);
+    top: 59vmin;
+    left: 43vmin;
+}
+#s7{
+    height: 15vmin;
+    width: 25vmin;
+    transform: rotate(-30deg);
+    top: 40vmin;
+    left: 48vmin;
+}
+#s8{
+    height: 5vmin;
+    width: 20vmin;
+    transform: rotate(30deg);
+    top: 70vmin;
+    left: 1vmin;
+}
+
+
+
+
+
+
+
+
+@media screen and (max-width: 420px) {
+    .board {
+        flex-direction: column-reverse;
+    }
+    .item {
+        font-size: 0.3rem;
+        padding: 0.1rem;
+    }
+}
+@media screen and (max-width: 800px) {
+    .board {
+        flex-direction: column-reverse;
+    }
+    .item {
+        font-size: 0.4rem;
+    }
+}
