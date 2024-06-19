@@ -24,9 +24,9 @@ function resetGame() {
   leaderboardModal.style.display = "none";
   document.getElementsByClassName("game")[0].style.display = "none";
   document.querySelector("#red").style.marginLeft = "0vmin";
-  document.querySelector("#red").style.marginTop = "-72vmin";
+  document.querySelector("#red").style.marginTop = "0vmin";
   document.querySelector("#blue").style.marginLeft = "0vmin";
-  document.querySelector("#blue").style.marginTop = "-72vmin";
+  document.querySelector("#blue").style.marginTop = "0vmin";
   document.querySelector("#green").style.marginLeft = "0vmin";
   document.querySelector("#green").style.marginTop = "0vmin";
   document.querySelector("#yellow").style.marginLeft = "0vmin";
