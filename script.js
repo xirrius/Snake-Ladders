@@ -1,12 +1,61 @@
-let turn = "red";
-let stopEvent = false;
-document.querySelector("#red").style.marginLeft = "0vmin";
-document.querySelector("#red").style.marginTop = "0vmin";
-document.querySelector("#blue").style.marginLeft = "0vmin";
-document.querySelector("#blue").style.marginTop = "0vmin";
+let numberOfPlayers;
+let players;
+let turn;
+let stopEvent = true;
+let winners;
 
-document.addEventListener("keydown", async (e) => {
-  if (e.keyCode == "83" && !stopEvent) {
+document.getElementsByClassName("game")[0].style.display = "none";
+
+const modal = document.getElementById("playerModal");
+const startGameBtn = document.getElementById("startGame");
+const playerSelect = document.getElementById("playerSelect");
+const reset = document.getElementById("reset");
+const restart = document.getElementById("restart");
+const leaderboardModal = document.getElementById("leaderboard");
+const scoreboard = document.querySelector('.scoreboard')
+const scoreboardHover = document.querySelector('.scoreboard:hover')
+
+reset.addEventListener("click", resetGame);
+restart.addEventListener("click", resetGame);
+
+startGameBtn.addEventListener("click", startGame);
+
+function resetGame() {
+  leaderboardModal.style.display = "none";
+  document.getElementsByClassName("game")[0].style.display = "none";
+  document.querySelector("#red").style.marginLeft = "0vmin";
+  document.querySelector("#red").style.marginTop = "-72vmin";
+  document.querySelector("#blue").style.marginLeft = "0vmin";
+  document.querySelector("#blue").style.marginTop = "-72vmin";
+  document.querySelector("#green").style.marginLeft = "0vmin";
+  document.querySelector("#green").style.marginTop = "0vmin";
+  document.querySelector("#yellow").style.marginLeft = "0vmin";
+  document.querySelector("#yellow").style.marginTop = "0vmin";
+  document.querySelector("#orange").style.marginLeft = "0vmin";
+  document.querySelector("#orange").style.marginTop = "0vmin";
+  modal.style.display = "flex";
+}
+
+function startGame() {
+  numberOfPlayers = parseInt(playerSelect.value);
+  for (i = 0; i < 5; i++) {
+    let elem = document.querySelector(`.players:nth-child(${i + 1})`);
+    if (i >= numberOfPlayers) elem.style.display = "none";
+    else elem.style.display = "block";
+  }
+  stopEvent = false;
+  players = ["red", "blue", "green", "yellow", "orange"];
+  turn = "red";
+  scoreboard.style.backgroundColor = `${turn}`;
+  document.querySelector("#heading").innerHTML = `Snake And Ladder`;
+  document.querySelector("#p_turn").innerHTML = `${turn} player's turn`;
+  winners = [];
+  modal.style.display = "none";
+  document.getElementsByClassName("game")[0].style.display = "block";
+}
+
+scoreboard.addEventListener("click", async (e) => {
+  if (!stopEvent) {
     stopEvent = true;
     let diceNum = await roll();
     let isOutOfRange = checkRange(diceNum);
@@ -15,40 +64,61 @@ document.addEventListener("keydown", async (e) => {
       await run(diceNum);
       await new Promise((resolve) => setTimeout(resolve, 400)); //after run
     }
-    let wonBy = checkWin()
-    if(wonBy == 'none') {
-      changeTurn()
-      stopEvent = false
+    checkWin();
+    if (winners.length < numberOfPlayers - 1) {
+      changeTurn();
+      stopEvent = false;
+    } else {
+      gameEnd();
     }
   }
 });
 
+function gameEnd() {
+  const leaderboardList = document.getElementById("leaderboard-list");
+  leaderboardList.innerHTML = "";
+  winners.forEach((winner, index) => {
+    const li = document.createElement("li");
+    li.textContent = `${winner}`;
+    leaderboardList.appendChild(li);
+  });
+  const lli = document.createElement("li");
+  console.log(players[0], turn);
+  lli.textContent = `${players[0]}`;
+  leaderboardList.appendChild(lli);
+  document.getElementsByClassName("game")[0].style.display = "none";
+  leaderboardModal.style.display = "flex";
+}
+
 function checkWin() {
-  if(marginTop() == -72 && marginLeft() == 0) {
-    document.querySelector('#p_turn').innerHTML = `${turn} player wins!`
-    //play audio
-    return turn
-  } else {
-    return 'none'
+  if (marginTop() == -72 && marginLeft() == 0) {
+    if (winners.length === 0) {
+      //play audio
+      new Audio('goodresult.mp3').play()
+      document.querySelector("#heading").innerHTML = `${turn} player wins!`;
+    }
+    winners.push(turn);
+    players = players.filter((player) => player !== turn);
+    console.log(players, winners);
   }
 }
 
 function checkRange(diceNum) {
   let isOutOfRange = false;
   if (marginTop() == -72 && marginLeft() + Number(diceNum * -8) < 0) {
-    isOutOfRange = true
+    isOutOfRange = true;
   }
-  return isOutOfRange
+  return isOutOfRange;
 }
 
 function changeTurn() {
-  if (turn == "blue") {
-    document.querySelector("#p_turn").innerHTML = "Red player's turn";
-    turn = "red";
-  } else if (turn == "red") {
-    document.querySelector("#p_turn").innerHTML = "Blue player's turn";
-    turn = "blue";
-  }
+  let currentIndex = players.indexOf(turn);
+  let nextIndex = (currentIndex + 1) % (numberOfPlayers - winners.length);
+  turn = players[nextIndex];
+  document.querySelector("#p_turn").innerHTML = `${turn} player's turn`;
+  scoreboard.style.backgroundColor = `${turn}`
+  // scoreboardHover.style.backgroundColor = `white`
+  console.log(turn, nextIndex);
 }
 
 function run(diceNum) {
@@ -106,7 +176,7 @@ function checkLaddersAndSnakes() {
     ];
     for (let i = 0; i < tos.length; i++) {
       if (marginLeft() == froms[i][0] && marginTop() == froms[i][1]) {
-        // play audio
+        new Audio("jump.mp3").play();
         document.querySelector(
           `#${turn}`
         ).style.marginLeft = `${tos[i][0]}vmin`;
@@ -120,14 +190,8 @@ function checkLaddersAndSnakes() {
 }
 
 function move(direction) {
-  console.log(
-    "Top: ",
-    document.querySelector(`#${turn}`).style.marginTop,
-    " Left: ",
-    document.querySelector(`#${turn}`).style.marginLeft
-  );
   return new Promise(async (resolve, reject) => {
-    // audio play
+    new Audio('move.mp3').play()
     if (direction == "up") {
       document.querySelector(`#${turn}`).style.marginTop =
         String(marginTop() - 8) + "vmin";
